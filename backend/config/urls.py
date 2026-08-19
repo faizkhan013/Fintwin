@@ -17,7 +17,7 @@ urlpatterns = [
     path("api/consent/", include("consent.urls")),
     path("api/imports/", include("imports.urls")),
     path("api/twin/", include("digital_twin.urls")),
-    path("api/collections/", include("collections.urls")),
+    path("api/collections/", include("collections_app.urls")),
     path("api/analytics/", include("analytics.urls")),
     path("api/market/", include("market_analysis.urls")),
 ]
