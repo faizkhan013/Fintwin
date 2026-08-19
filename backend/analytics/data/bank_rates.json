@@ -1,0 +1,6 @@
+[
+  {"provider": "Illustrative Bank A", "interest_rate": 10.5},
+  {"provider": "Illustrative Bank B", "interest_rate": 11.25},
+  {"provider": "Illustrative Bank C", "interest_rate": 12.0},
+  {"provider": "Illustrative Bank D", "interest_rate": 13.5}
+]

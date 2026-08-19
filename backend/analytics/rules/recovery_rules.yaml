@@ -1,0 +1,5 @@
+overdue:
+  reminder_after_days: 1
+  escalation_after_days: 15
+partial_payment:
+  enabled: true
