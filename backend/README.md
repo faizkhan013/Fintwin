@@ -84,3 +84,63 @@ Use:
 This backend is an advisory financial-planning system. It does **not** make automatic lending decisions or approve/reject loans. Financing comparisons return modeled costs and explanations so the MSME user can decide.
 
 The bank rate JSON is illustrative seed data and must not be presented as live bank offers.
+
+## Windows note
+
+The Django collections app is intentionally named `collections_app`.
+Do not rename it back to `collections`, because Python itself has a standard-library
+module named `collections`, and a project-level `collections` package can break
+imports before Django even starts.
+
+For a fresh setup, create the virtual environment before installing packages:
+```powershell
+cd D:\Fintwin\backend
+python -m venv venv
+venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+copy .env.example .env
+python manage.py check
+python manage.py migrate
+```
+
+## Health check
+
+GET `/health/`
+
+Expected response:
+
+```json
+{"status": "ok", "service": "cashflow-digital-twin-backend"}
+```
+
+## Main API groups
+
+- `/api/auth/token/`
+- `/api/accounts/`
+- `/api/consent/`
+- `/api/imports/`
+- `/api/twin/`
+- `/api/collections/`
+- `/api/analytics/`
+- `/api/market/`
+
+## Backend app structure
+
+```text
+backend/
+├── config/
+├── accounts/
+├── consent/
+├── imports/
+├── digital_twin/
+├── collections_app/       # named this way to avoid Python stdlib collision
+├── analytics/
+├── market_analysis/
+├── audit/
+├── common/
+├── media/
+├── staticfiles/
+├── manage.py
+└── requirements.txt
+```
