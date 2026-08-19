@@ -16,3 +16,5 @@ pytesseract>=0.3
 requests>=2.32
 pytest>=8.0
 pytest-django>=4.8
+
+gunicorn>=22.0
