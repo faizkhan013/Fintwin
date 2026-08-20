@@ -1,8 +1,3 @@
--- Illustrative seed data only. Not live bank offers.
--- Bank comparison is intentionally advisory; no lending decision is automated.
-
--- The Django database table is created by migrations.
--- Insert illustrative market references after migrations if desired.
 INSERT INTO product_price_references
 (product_name, category, supplier, price, source)
 SELECT 'Sample Packaging Material', 'Packaging', 'Illustrative Supplier A', 120.00, 'Demo seed'

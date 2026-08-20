@@ -1,7 +1,3 @@
--- CashFlow Digital Twin - PostgreSQL reference schema
--- Django migrations remain the authoritative schema.
--- This file documents the core relational design for PostgreSQL 16/17/18.
-
 CREATE TABLE IF NOT EXISTS business_profiles (
     id BIGSERIAL PRIMARY KEY,
     user_id INTEGER UNIQUE NOT NULL,

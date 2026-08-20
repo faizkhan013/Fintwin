@@ -1,7 +1,5 @@
 # CashFlow Digital Twin - Backend
 
-Django + Django REST Framework backend for SOAIDEATHON-S42.
-
 ## Features
 
 - JWT authentication
@@ -134,7 +132,7 @@ backend/
 ├── consent/
 ├── imports/
 ├── digital_twin/
-├── collections_app/       # named this way to avoid Python stdlib collision
+├── collections_app/       
 ├── analytics/
 ├── market_analysis/
 ├── audit/
