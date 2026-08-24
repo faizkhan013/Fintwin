@@ -1,4 +1,4 @@
-# KhataTwin — Cash-Flow Digital Twin (Frontend)
+
 
 React (JS) + Vite frontend for the consent-based MSME cash-flow digital twin.
 
