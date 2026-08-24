@@ -1,20 +1,38 @@
-import axiosClient, { mockDelay } from './axiosClient'
+import axiosClient, { unwrapList } from './axiosClient'
 
-export async function getConsents() {
-  // Real call: return (await axiosClient.get('/consent/')).data
-  return mockDelay([
-    { id: 1, dataType: 'Invoices', purpose: 'Cash-flow forecasting', status: 'active', expiresAt: '2026-11-18' },
-    { id: 2, dataType: 'Payment history', purpose: 'Risk & delay analysis', status: 'active', expiresAt: '2026-11-18' },
-    { id: 3, dataType: 'Recurring expenses', purpose: 'Liquidity forecasting', status: 'active', expiresAt: '2026-11-18' },
-  ])
+const typeMap = {
+  Invoices: 'invoice',
+  'Payment history': 'payment',
+  'Recurring expenses': 'expense',
+  Receivables: 'receivable',
+  'Bank data': 'bank',
+}
+const labelMap = Object.fromEntries(Object.entries(typeMap).map(([label, value]) => [value, label]))
+
+function normalize(c) {
+  return {
+    ...c,
+    dataType: labelMap[c.consent_type] || c.data_type || c.consent_type,
+    status: c.status || (c.granted ? 'active' : 'revoked'),
+    expiresAt: c.expires_at,
+  }
 }
 
-export async function grantConsent(dataType, purpose, durationDays) {
-  // Real call: return (await axiosClient.post('/consent/', { dataType, purpose, durationDays })).data
-  return mockDelay({ ok: true, dataType, purpose, durationDays })
+export async function getConsents() {
+  const response = await axiosClient.get('/consent/')
+  return unwrapList(response.data).map(normalize)
+}
+
+export async function grantConsent(dataType, purpose, durationDays = 90) {
+  const response = await axiosClient.post('/consent/', {
+    consent_type: typeMap[dataType] || dataType,
+    purpose,
+    duration_days: durationDays,
+  })
+  return normalize(response.data)
 }
 
 export async function revokeConsent(id) {
-  // Real call: return (await axiosClient.post(`/consent/${id}/revoke/`)).data
-  return mockDelay({ ok: true })
+  const response = await axiosClient.post(`/consent/${id}/revoke/`)
+  return normalize(response.data)
 }

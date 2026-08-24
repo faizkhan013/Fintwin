@@ -1,22 +1,21 @@
-import axiosClient, { mockDelay } from './axiosClient'
-import { mockBalanceSeries, mockSummary, mockInvoices } from './mockData'
+import axiosClient from './axiosClient'
 
 export async function getBalanceSeries() {
-  // Real call: return (await axiosClient.get('/digital-twin/balance-series/')).data
-  return mockDelay(mockBalanceSeries)
+  const response = await axiosClient.get('/twin/balance-series/')
+  return response.data
 }
 
 export async function getSummary() {
-  // Real call: return (await axiosClient.get('/digital-twin/summary/')).data
-  return mockDelay(mockSummary)
+  const response = await axiosClient.get('/twin/summary/')
+  return response.data
 }
 
 export async function getInvoices() {
-  // Real call: return (await axiosClient.get('/imports/invoices/')).data
-  return mockDelay(mockInvoices)
+  const response = await axiosClient.get('/twin/invoices/')
+  return response.data
 }
 
 export async function rebuildTwin() {
-  // Real call: return (await axiosClient.post('/digital-twin/rebuild/')).data
-  return mockDelay({ ok: true })
+  const response = await axiosClient.post('/twin/rebuild/')
+  return response.data
 }

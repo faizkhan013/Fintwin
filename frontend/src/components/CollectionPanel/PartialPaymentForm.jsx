@@ -26,7 +26,7 @@ export default function PartialPaymentForm({ invoice, onSubmit, onClose }) {
         <div className="flex gap-2 justify-end">
           <button onClick={onClose} className="text-sm px-4 py-2 rounded-md border border-charcoal/15">Cancel</button>
           <button
-            onClick={() => { onSubmit(invoice.id, Number(amount)); onClose() }}
+            onClick={() => { onSubmit(invoice.invoiceId, Number(amount)); onClose() }}
             disabled={!amount}
             className="text-sm px-4 py-2 rounded-md bg-verified text-paper disabled:opacity-40"
           >

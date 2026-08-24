@@ -1,29 +1,26 @@
+# Fintwin Frontend
 
-
-React (JS) + Vite frontend for the consent-based MSME cash-flow digital twin.
+React 18 + JavaScript + Vite frontend for the consent-based MSME cash-flow digital twin.
 
 ## Run locally
-```
+
+```bash
 npm install
 npm run dev
 ```
 
-App runs on http://localhost:5173. Login accepts any email/password (demo auth).
+App: `http://localhost:5173`
 
-## Backend
-All API calls live in `src/api/*.js`. Each function currently returns mock data
-(see `src/api/mockData.js`) with a small simulated delay, and has the real
-Django/DRF axios call commented directly above it — swap the mock line for the
-real call once the backend endpoints exist. Set `VITE_API_BASE_URL` in `.env`
-to point at your Django server.
+Set `VITE_API_BASE_URL` in `.env` to the Django API, for example:
 
-## Design
-Ledger/ledger-book visual language (deep bottle-green ink, aged paper, brass
-dividers, rubber-stamp red) built around one signature element: the "WHY"
-explain-stamp attached to every risk flag and recommendation, which expands
-to show the plain-English reasoning and the numbers behind it — this is the
-UI's answer to the "explain every recommendation" requirement.
+```text
+VITE_API_BASE_URL=http://localhost:8000/api
+```
+
+## API integration
+
+All API calls are in `src/api/*.js` and use Axios. The frontend is connected to the real Django endpoints; there is no mock-data fallback.
 
 ## Pages
-Login → Onboarding (consent) → Upload → Correction (review OCR) → Dashboard
-→ Simulation → Financing → Collections → Market (optional).
+
+Login/Register → Onboarding/Consent → Upload → OCR Correction → Dashboard → Simulation → Financing → Collections → Market Analysis.

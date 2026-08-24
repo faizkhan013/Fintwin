@@ -1,7 +1,8 @@
-import axiosClient, { mockDelay } from './axiosClient'
-import { mockMarketComparison } from './mockData'
+import axiosClient from './axiosClient'
 
-export async function compareProductPrice(productName) {
-  // Real call: return (await axiosClient.get('/market-analysis/compare/', { params: { productName } })).data
-  return mockDelay({ ...mockMarketComparison, product: productName || mockMarketComparison.product }, 600)
+export async function compareProductPrice(productName = '', currentPrice = 0) {
+  const response = await axiosClient.get('/market/compare/', {
+    params: { product: productName, price: currentPrice },
+  })
+  return response.data
 }

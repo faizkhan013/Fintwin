@@ -107,6 +107,8 @@ SIMPLE_JWT = {
 
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://localhost:6379/0")
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://localhost:6379/0")
+CELERY_TASK_ALWAYS_EAGER = os.getenv("CELERY_TASK_ALWAYS_EAGER", "True" if DEBUG else "False").lower() == "true"
+CELERY_TASK_EAGER_PROPAGATES = True
 
 # Optional dev fallback for environments without PostgreSQL:
 # Set DB_ENGINE=django.db.backends.sqlite3 in .env.

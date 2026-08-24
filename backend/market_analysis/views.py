@@ -6,6 +6,7 @@ from .models import ProductPriceReference
 from .serializers import ProductPriceReferenceSerializer
 from .services import compare_product_price
 
+
 class PriceReferenceListCreateView(generics.ListCreateAPIView):
     queryset = ProductPriceReference.objects.all()
     serializer_class = ProductPriceReferenceSerializer
@@ -15,8 +16,9 @@ class PriceReferenceListCreateView(generics.ListCreateAPIView):
             return [IsAdminUser()]
         return super().get_permissions()
 
+
 class PriceComparisonView(APIView):
     def get(self, request):
         product = request.query_params.get("product", "")
-        price = float(request.query_params.get("price", 0))
+        price = float(request.query_params.get("price", 0) or 0)
         return Response(compare_product_price(product, price))

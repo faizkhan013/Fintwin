@@ -13,31 +13,22 @@ import { useAuth } from '../context/AuthContext'
 
 export default function DashboardPage() {
   const { user } = useAuth()
-  const [summary, setSummary] = useState(null)
-  const [series, setSeries] = useState(null)
-  const [invoices, setInvoices] = useState(null)
-  const [riskFlags, setRiskFlags] = useState(null)
-  const [savings, setSavings] = useState(null)
-  const [survivability, setSurvivability] = useState(null)
+  const [data, setData] = useState({ summary: null, series: null, invoices: null, riskFlags: null, savings: null, survivability: null })
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    getSummary().then(setSummary)
-    getBalanceSeries().then(setSeries)
-    getInvoices().then(setInvoices)
-    getRiskFlags().then(setRiskFlags)
-    getSavingsAdvice().then(setSavings)
-    getSurvivability().then(setSurvivability)
+    Promise.all([getSummary(), getBalanceSeries(), getInvoices(), getRiskFlags(), getSavingsAdvice(), getSurvivability()])
+      .then(([summary, series, invoices, riskFlags, savings, survivability]) => setData({ summary, series, invoices, riskFlags, savings, survivability }))
+      .catch((err) => setError(err.response?.data?.detail || 'Could not load the cash-flow twin.'))
   }, [])
 
-  const loading = !summary || !series || !invoices || !riskFlags
+  const { summary, series, invoices, riskFlags, savings, survivability } = data
+  const loading = !summary || !series || !invoices || !riskFlags || !savings || !survivability
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-10">
-      <SectionHeader
-        eyebrow="Ledger"
-        title={`Welcome back, ${user?.businessName || 'there'}`}
-        subtitle="Your cash-flow digital twin, built from consented invoices, expenses and payment history."
-      />
+      <SectionHeader eyebrow="Ledger" title={`Welcome back, ${user?.businessName || 'there'}`} subtitle="Your cash-flow digital twin, built from consented invoices, expenses and payment history." />
+      {error && <p className="text-sm text-stamp mb-4">{error}</p>}
       {loading ? <Loader label="Building your twin…" /> : (
         <div className="space-y-8">
           <SummaryCards summary={summary} />
@@ -49,7 +40,7 @@ export default function DashboardPage() {
           <div>
             <h2 className="font-display text-xl mb-3">Risk flags</h2>
             <div className="space-y-3">
-              {riskFlags.map((f) => <RiskFlagCard key={f.id} flag={f} />)}
+              {riskFlags.length ? riskFlags.map((f) => <RiskFlagCard key={f.id} flag={f} />) : <div className="ledger-card p-4 text-sm text-muted">No material risk flags detected from the available data.</div>}
             </div>
           </div>
           <BalanceTimeline invoices={invoices} />

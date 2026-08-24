@@ -1,35 +1,58 @@
-# API Endpoints
+# Fintwin API endpoints
 
-Base URL: `http://127.0.0.1:8000`
+All protected endpoints use `Authorization: Bearer <access_token>`.
 
-Authentication uses JWT. Protected requests use:
+## Authentication
 
-`Authorization: Bearer <access_token>`
+- `POST /api/auth/token/` — obtain JWT access/refresh tokens
+- `POST /api/auth/token/refresh/` — refresh access token
+- `POST /api/accounts/register/` — create user + business profile
+- `GET/PATCH /api/accounts/profile/` — current business profile
 
-| Endpoint | Method | Purpose |
-|---|---|---|
-| `/health/` | GET | Backend health |
-| `/api/auth/token/` | POST | Login |
-| `/api/auth/token/refresh/` | POST | Refresh token |
-| `/api/accounts/register/` | POST | Register MSME user |
-| `/api/accounts/profile/` | GET/PUT/PATCH | Business profile |
-| `/api/consent/` | GET/POST | List/create consent |
-| `/api/consent/{id}/revoke/` | PUT/PATCH | Revoke consent |
-| `/api/imports/` | GET/POST | List/upload imports |
-| `/api/imports/invoice/{id}/` | GET/PUT/PATCH | Review/correct invoice |
-| `/api/imports/{id}/approve/` | PUT/PATCH | Approve imported data |
-| `/api/twin/` | GET | Digital twin |
-| `/api/twin/entry/` | POST | Add income/expense |
-| `/api/twin/build/` | POST | Rebuild twin + forecast |
-| `/api/collections/partial-payment/` | POST | Record partial payment |
-| `/api/collections/action/` | POST | Log collection action |
-| `/api/collections/actions/` | GET | Collection history |
-| `/api/analytics/risk/` | GET | Risk summary |
-| `/api/analytics/simulation/` | POST | Shock simulation |
-| `/api/analytics/loans/` | GET | Illustrative loan comparison |
-| `/api/analytics/financing/` | POST | Financing cost comparison |
-| `/api/analytics/opportunity-cost/` | POST | Wait vs finance cost |
-| `/api/analytics/savings/` | GET | Emergency savings guidance |
-| `/api/analytics/recovery/` | POST | Recovery plan |
-| `/api/market/compare/` | GET | Market price comparison |
-| `/api/market/references/` | GET/POST | Price references; POST is admin-only |
+## Consent
+
+- `GET /api/consent/` — list current user's consents
+- `POST /api/consent/` — grant/update consent (`consent_type`, `purpose`, `duration_days`)
+- `POST /api/consent/<id>/revoke/` — revoke consent
+
+## Imports
+
+- `POST /api/imports/upload/` — upload PDF/image/CSV/JSON
+- `GET /api/imports/pending/` — extracted imports waiting for review
+- `GET /api/imports/invoices/` — current user's invoices
+- `POST /api/imports/<id>/confirm/` — confirm/correct an extracted import
+- `PATCH /api/imports/invoice/<id>/` — update a single invoice
+
+## Digital twin
+
+- `GET /api/twin/` — current twin
+- `POST /api/twin/entry/` — add a manual cash-flow entry
+- `POST /api/twin/rebuild/` — rebuild twin + forecast + risks
+- `GET /api/twin/summary/` — dashboard summary
+- `GET /api/twin/balance-series/` — forecast chart data
+- `GET /api/twin/invoices/` — receivables timeline
+
+## Analytics
+
+- `GET /api/analytics/forecast/` — 90-day hybrid ML forecast
+- `GET /api/analytics/risk/` — explainable risk flags
+- `GET /api/analytics/savings/` — emergency-savings planning advice
+- `GET /api/analytics/survivability/` — cash-reserve survivability estimate
+- `GET /api/analytics/recovery-plan/` — receivables recovery steps
+- `GET /api/analytics/simulate/presets/` — supported shock presets
+- `POST /api/analytics/simulate/` — run a shock simulation
+- `GET /api/analytics/loans/` — illustrative lender-rate comparison
+- `POST /api/analytics/financing/` — financing-option comparison
+- `POST /api/analytics/opportunity-cost/` — financing vs waiting-cost comparison
+
+## Collections
+
+- `POST /api/collections/partial-payment/` — record a partial payment
+- `POST /api/collections/follow-up/` — record a collection follow-up
+- `GET /api/collections/actions/` — list collection actions
+
+## Optional market analysis
+
+- `GET /api/market/compare/?product=<name>&price=<amount>`
+- `GET /api/market/references/`
+- `POST /api/market/references/` — admin only

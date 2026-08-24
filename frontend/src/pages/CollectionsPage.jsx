@@ -20,7 +20,7 @@ export default function CollectionsPage() {
   }, [])
 
   const handleFlagFollowUp = async (invoice) => {
-    await flagForFollowUp(invoice.id, 'Flagged from Collections page')
+    await flagForFollowUp(invoice.invoiceId, 'Flagged from Collections page')
     setToast(`${invoice.customer} flagged for follow-up.`)
     setTimeout(() => setToast(null), 2500)
   }

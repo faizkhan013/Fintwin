@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { login as loginApi } from '../api/authApi'
+import { Link } from 'react-router-dom'
+import { login as loginApi, getProfile } from '../api/authApi'
 
 export default function LoginPage() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
-  const { login } = useAuth()
+  const { login, updateProfile } = useAuth()
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
@@ -17,9 +18,12 @@ export default function LoginPage() {
   try {
     const res = await loginApi(username, password)
 
-    login(username, res.access)
-
-    navigate('/dashboard')
+    login(username, res.access, res.refresh)
+    try {
+      const profile = await getProfile()
+      updateProfile({ businessName: profile.business_name })
+    } catch {}
+    navigate('/onboarding')
   } catch (error) {
     console.error('Login failed:', error)
     alert('Invalid username or password')
@@ -68,6 +72,7 @@ export default function LoginPage() {
             {loading ? 'Signing in…' : 'Sign in'}
           </button>
         </form>
+        <p className="text-xs text-center text-muted mt-4">New business? <Link className="text-ink underline" to="/register">Create an account</Link></p>
       </div>
     </div>
   )

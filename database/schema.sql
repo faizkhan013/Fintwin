@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS consent_records (
     purpose TEXT NOT NULL,
     granted_at TIMESTAMPTZ,
     revoked_at TIMESTAMPTZ,
+    expires_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     UNIQUE(user_id, consent_type)
 );
