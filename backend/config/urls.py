@@ -4,12 +4,23 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.http import JsonResponse
+from django.db import connection
 
 def health(request):
     return JsonResponse({"status": "ok", "service": "cashflow-digital-twin-backend"})
 
+def db_health(request):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+            cursor.fetchone()
+        return JsonResponse({"status": "ok", "database": "connected"})
+    except Exception as exc:
+        return JsonResponse({"status": "error", "database": "unavailable", "detail": str(exc)}, status=503)
+
 urlpatterns = [
     path("health/", health, name="health"),
+    path("health/db/", db_health, name="db-health"),
     path("admin/", admin.site.urls),
     path("api/auth/token/", TokenObtainPairView.as_view(), name="token"),
     path("api/auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),

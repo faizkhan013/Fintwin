@@ -11,7 +11,7 @@ def build_cashflow_twin(user):
     # Rebuild system-generated receivable entries so the twin always reflects
     # the latest approved/corrected invoice data without duplicating rows.
     CashFlowEntry.objects.filter(twin=twin, source="invoice").delete()
-    invoices = ImportedInvoice.objects.filter(import_file__user=user).select_related("import_file")
+    invoices = ImportedInvoice.objects.filter(import_file__user=user, import_file__status="approved").select_related("import_file")
     for invoice in invoices:
         outstanding = invoice.outstanding_amount
         if outstanding > 0:

@@ -198,3 +198,20 @@ The current forecasting engine uses a hybrid approach:
 - deterministic fallback when there is insufficient history.
 
 This is intentionally separated from the financial rules. The ML model predicts patterns; deterministic rules explain and guard decisions.
+
+## Quick demo
+
+For Windows, run `SETUP_WINDOWS.ps1` from the project root. It creates the backend environment, checks PostgreSQL, runs migrations and creates a ready demo account (`demo` / `Demo@12345`). See `DEMO_GUIDE.md`.
+
+## Windows demo setup
+
+1. Ensure PostgreSQL 18 is running and the database `cashflow_db` exists.
+2. From the project root run:
+   `Set-ExecutionPolicy -Scope Process Bypass`
+   `./SETUP_WINDOWS.ps1`
+3. Enter the real password for the PostgreSQL `postgres` user when prompted.
+4. Start both applications with `./START_ALL.ps1`, or start them manually.
+5. Open `http://localhost:5173`.
+6. Demo login: `demo` / `Demo@12345`.
+
+The setup script verifies PostgreSQL authentication before creating `backend/.env`, then runs Django migrations and seeds demo data. The frontend uses `frontend/.env` to call Django at `http://127.0.0.1:8000/api`.
